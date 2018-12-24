@@ -60,7 +60,7 @@ public abstract class BaseAppCompatActivity<P extends IContract.IPresenter> exte
             mUnbinder.unbind();
         }
         if (presenter != null) {
-            presenter.attachView(this);
+            presenter.detachView();
         }
         EventBus.getDefault().unregister(this);
         this.mUnbinder = null;

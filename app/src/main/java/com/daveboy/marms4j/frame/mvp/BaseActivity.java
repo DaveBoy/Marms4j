@@ -57,7 +57,7 @@ public abstract class BaseActivity<P extends IContract.IPresenter> extends RxAct
             mUnbinder.unbind();
         }
         if (presenter != null) {
-            presenter.attachView(this);
+            presenter.detachView();
         }
         EventBus.getDefault().unregister(this);
         this.mUnbinder = null;

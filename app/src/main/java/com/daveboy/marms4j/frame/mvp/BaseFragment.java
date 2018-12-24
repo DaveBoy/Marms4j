@@ -72,7 +72,7 @@ public abstract class BaseFragment<P extends IContract.IPresenter> extends RxFra
             mUnbinder.unbind();
         }
         if (presenter != null) {
-            presenter.attachView(this);
+            presenter.detachView();
         }
         EventBus.getDefault().unregister(this);
         this.mUnbinder = null;
