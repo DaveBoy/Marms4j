@@ -33,7 +33,7 @@ public class ResponseTransformer {
             @Override
             public ObservableSource<T> apply(Observable<BaseResponse<T>> upstream) {
                 Observable observable= upstream
-                        .onErrorResumeNext(new ErrorResumeFunction<T>())
+                        .onErrorResumeNext(new ErrorResumeFunction<BaseResponse<T>>())
                         .flatMap(new ResponseFunction<T>())
                         .observeOn(AndroidSchedulers.mainThread())
                         .subscribeOn(Schedulers.io());
@@ -68,10 +68,10 @@ public class ResponseTransformer {
      *
      * @param <T>
      */
-    private static class ErrorResumeFunction<T> implements Function<Throwable, ObservableSource<? extends BaseResponse<T>>> {
+    private static class ErrorResumeFunction<T> implements Function<Throwable, ObservableSource<? extends T>> {
 
         @Override
-        public ObservableSource<? extends BaseResponse<T>> apply(Throwable throwable) throws Exception {
+        public ObservableSource<? extends T> apply(Throwable throwable) throws Exception {
             return Observable.error(CustomException.handleException(throwable));
         }
     }
