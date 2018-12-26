@@ -13,7 +13,9 @@ public abstract class CustomObsever<T> implements Observer<T> {
 
     @Override
     public void onSubscribe(Disposable d) {
-
+        if(!NetworkUtil.isNetworkAvailable(BaseApplication.getInstance())){
+            d.dispose();
+        }
     }
 
     @Override
