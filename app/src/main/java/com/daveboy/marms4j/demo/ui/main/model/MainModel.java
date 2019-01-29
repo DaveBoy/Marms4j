@@ -14,6 +14,7 @@ import com.trello.rxlifecycle2.LifecycleTransformer;
 import java.util.List;
 
 public class MainModel extends BaseModel implements MainContract.Model {
+
     @Override
     public void login(String userName, String passWord, CustomObsever<Login> customObsever, LifecycleTransformer lifecycleTransformer) {
         RetrofitManager.getInstance().getRequest(ApiService.class)

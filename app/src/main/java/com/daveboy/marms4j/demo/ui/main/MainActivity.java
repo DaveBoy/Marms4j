@@ -1,5 +1,7 @@
 package com.daveboy.marms4j.demo.ui.main;
 
+import android.support.v7.widget.RecyclerView;
+import android.widget.ListView;
 import android.widget.TextView;
 
 import com.daveboy.marms4j.R;
@@ -21,6 +23,8 @@ public class MainActivity extends BaseAppCompatActivity<MainContract.Presenter> 
 
     @Override
     public void initData() {
+        RecyclerView;
+        ListView
         //presenter.login("15023822235","15023822235");
         presenter.getArticleList(1);
     }

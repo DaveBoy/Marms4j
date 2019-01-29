@@ -1,5 +1,9 @@
 package com.daveboy.marms4j.frame.network;
 
+import android.webkit.URLUtil;
+
+import com.blankj.utilcode.util.StringUtils;
+
 import okhttp3.OkHttpClient;
 import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Retrofit;
@@ -14,6 +18,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
 public class RetrofitManager {
     private static RetrofitManager mInstance;
     private Retrofit retrofit;
+    private Object service;
     public static RetrofitManager getInstance() {
         if (mInstance == null) {
             synchronized (RetrofitManager.class) {
@@ -31,6 +36,9 @@ public class RetrofitManager {
      * @param url baseurl
      */
     public void init(String url) {
+        if(StringUtils.isEmpty(url)||!(URLUtil.isHttpUrl(url)||URLUtil.isHttpsUrl(url))){
+            throw new IllegalArgumentException(String.format("the fucking url %s is not correct",url));
+        }
         // 初始化okhttp
         HttpLoggingInterceptor logging = new HttpLoggingInterceptor();
         BaseParamsInterceptor baseParamsInterceptor = new BaseParamsInterceptor();
@@ -50,17 +58,23 @@ public class RetrofitManager {
     }
 
     /**
-     * @param service 网络请求接口
-     * @param <T>
+     * @param serviceClass 网络请求接口
      * @return
      */
-    public  <T>T getRequest(Class<T> service) {
+    public  <T> T  getRequest(Class<T>  serviceClass) {
         if(retrofit==null){
-            throw new RuntimeException("必须先调用RetrofitManager.getInstance().init(url)进行初始化");
+            throw new RuntimeException("必须先调用Marms4j.init进行初始化");
         }
-        if(!service.isInterface()){
+        if(!serviceClass.isInterface()){
             throw new RuntimeException("必须传入网络请求接口的class");
         }
-        return retrofit.create(service);
+        if(service==null) {
+            service = retrofit.create(serviceClass);
+        }
+        /**
+         * 这里这么写主要是泛型无法保存下来，只能保存一个class，谁有什么好方法留个言，求你了....
+         * 主要是service依赖注入的同时要能保留下来，小菜鸡确实没啥好办法了
+         */
+        return serviceClass.cast(service);
     }
 }

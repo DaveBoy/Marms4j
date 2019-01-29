@@ -1,16 +1,17 @@
 package com.daveboy.marms4j.demo;
 
-import com.daveboy.marms4j.frame.base.BaseApplication;
+import android.app.Application;
+
+import com.daveboy.marms4j.frame.base.Marms4j;
 import com.daveboy.marms4j.frame.network.BaseParamsInterceptor;
 import com.daveboy.marms4j.frame.network.ResponseTransformer;
-import com.daveboy.marms4j.frame.network.RetrofitManager;
 
-public class DemoApplication extends BaseApplication {
+public class DemoApplication extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
-        RetrofitManager.getInstance().init("http://www.wanandroid.com");
-        ResponseTransformer.SUCCESS_CODE=0;
-        BaseParamsInterceptor.addGlobalPara("password","15023822235");
+         Marms4j.init(this, "http://www.wanandroid.com")
+                .setSuccessCode(0)
+                .addGlobalPara("password", "15023822235");
     }
 }
